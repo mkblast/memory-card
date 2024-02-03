@@ -13,6 +13,9 @@ function shuffle(array) {
 function App() {
   const [cards, setCards] = useState([])
   const [difficulty, setDifficulty] = useState(null)
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [loose, setLoose] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,21 +37,77 @@ function App() {
     )
 
     setCards(prev => shuffle(prev));
+    handleScore();
+  }
+
+  function handleRestart() {
+    setCards([]);
+    setLoose(false);
+    setScore(0);
+    setDifficulty(null);
+    setScore(0);
+  }
+
+  function handleScore() {
+    if (score === highScore) {
+      setHighScore(highScore + 1);
+    }
+
+    setScore(score + 1);
+
+  }
+
+
+  if (loose) {
+    return (
+      <>
+        <p>highScore: {highScore}</p>
+        <p>Score: {score}</p>
+        <p>You loose</p>
+        <button onClick={() => handleRestart()}>
+          Try again
+        </button>
+      </>
+    )
+  }
+
+  if (score === difficulty) {
+    return (
+      <>
+        <p>highScore: {highScore}</p>
+        <p>Score: {score}</p>
+        <p>You win</p>
+        <button onClick={() => handleRestart()}>
+          Restart
+        </button>
+      </>
+    )
   }
 
   return (
     <div>
-      <div>
-        <button onClick={() => setDifficulty(5)}>Easy</button>
-        <button onClick={() => setDifficulty(10)}>Normal</button>
-        <button onClick={() => setDifficulty(15)}>Hard</button>
-      </div>
+      {cards.length === 0 &&
+        <div>
+          <button onClick={() => setDifficulty(5)}>Easy</button>
+          <button onClick={() => setDifficulty(10)}>Normal</button>
+          <button onClick={() => setDifficulty(15)}>Hard</button>
+        </div>
+      }
 
       <div>
         {difficulty != null &&
           <div>
-            {console.log(cards)}
+            <p>Score: {score}</p>
+            <p>highScore: {highScore}</p>
             {cards.map(c => {
+              if (c.clicked === true) {
+                return (
+                  <div key={c.id} onClick={() => setLoose(true)}>
+                    <Card {...c} />
+                  </div>
+                )
+              }
+
               return (
                 <div key={c.id} onClick={() => clickHandler(c.id)}>
                   <Card {...c} />
