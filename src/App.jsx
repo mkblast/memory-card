@@ -95,29 +95,30 @@ function App() {
         </div>
       }
 
-      <div className="game">
-        {difficulty != null &&
-          <div>
-            <p>Score: {score}</p>
-            <p>highScore: {highScore}</p>
-            {cards.map(c => {
-              if (c.clicked === true) {
-                return (
-                  <div key={c.id} onClick={() => setLoose(true)}>
-                    <Card {...c} />
-                  </div>
-                )
-              }
+      <div className="score">
+        <p>Score: {score}</p>
+        <p>highScore: {highScore}</p>
+      </div>
 
+      {difficulty != null &&
+        <div className="cards">
+          {cards.map(c => {
+            if (c.clicked === true) {
               return (
-                <div key={c.id} onClick={() => clickHandler(c.id)}>
+                <div key={c.id} onClick={() => setLoose(true)}>
                   <Card {...c} />
                 </div>
               )
-            })}
-          </div>
-        }
-      </div>
+            }
+
+            return (
+              <div key={c.id} onClick={() => clickHandler(c.id)}>
+                <Card {...c} />
+              </div>
+            )
+          })}
+        </div>
+      }
     </div>
   )
 }
