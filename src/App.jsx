@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Card from "./components/Card"
 import { getPoki } from "./modules/request"
+import "./App.css"
 
 
 function shuffle(array) {
@@ -94,7 +95,7 @@ function App() {
         </div>
       }
 
-      <div>
+      <div className="game">
         {difficulty != null &&
           <div>
             <p>Score: {score}</p>
