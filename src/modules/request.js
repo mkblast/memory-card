@@ -14,7 +14,7 @@ export async function getPoki(items) {
   let rand = []
   while (i < items) {
     const gen = Math.floor(Math.random() * 150);
-    if (rand.includes(gen)) {
+    if (rand.includes(gen) || gen === 0) {
       continue;
     }
 

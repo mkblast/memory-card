@@ -13,6 +13,7 @@ function shuffle(array) {
 
 function App() {
   const [cards, setCards] = useState([])
+  const [loading, setLoading] = useState(true);
   const [difficulty, setDifficulty] = useState(null)
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -26,6 +27,7 @@ function App() {
 
       const req = await getPoki(difficulty);
 
+      setLoading(false);
       setCards(req);
     })()
   }, [difficulty])
@@ -58,12 +60,18 @@ function App() {
 
   }
 
+  const displayScore = (
+    <div className="score">
+      <p>Score: {score}</p>
+      <p>highScore: {highScore}</p>
+    </div>
+  )
+
 
   if (loose) {
     return (
       <>
-        <p>highScore: {highScore}</p>
-        <p>Score: {score}</p>
+        {displayScore}
         <p>You loose</p>
         <button onClick={() => handleRestart()}>
           Try again
@@ -75,12 +83,38 @@ function App() {
   if (score === difficulty) {
     return (
       <>
-        <p>highScore: {highScore}</p>
-        <p>Score: {score}</p>
+        {displayScore}
         <p>You win</p>
         <button onClick={() => handleRestart()}>
           Restart
         </button>
+      </>
+    )
+  }
+
+  if (difficulty != null) {
+    return (
+      <>
+        {displayScore}
+        {loading ? <p>Loading</p> :
+          <div className="cards">
+            {cards.map(c => {
+              if (c.clicked === true) {
+                return (
+                  <div key={c.id} onClick={() => setLoose(true)}>
+                    <Card {...c} />
+                  </div>
+                )
+              }
+
+              return (
+                <div key={c.id} onClick={() => clickHandler(c.id)}>
+                  <Card {...c} />
+                </div>
+              )
+            })}
+          </div>
+        }
       </>
     )
   }
@@ -95,30 +129,7 @@ function App() {
         </div>
       }
 
-      <div className="score">
-        <p>Score: {score}</p>
-        <p>highScore: {highScore}</p>
-      </div>
-
-      {difficulty != null &&
-        <div className="cards">
-          {cards.map(c => {
-            if (c.clicked === true) {
-              return (
-                <div key={c.id} onClick={() => setLoose(true)}>
-                  <Card {...c} />
-                </div>
-              )
-            }
-
-            return (
-              <div key={c.id} onClick={() => clickHandler(c.id)}>
-                <Card {...c} />
-              </div>
-            )
-          })}
-        </div>
-      }
+      {displayScore}
     </div>
   )
 }
