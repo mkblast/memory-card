@@ -2,6 +2,10 @@ import { useEffect, useState } from "react"
 import Card from "./components/Card"
 import { getPoki } from "./modules/request"
 import "./App.css"
+import Score from "./components/Score"
+import Difficulty from "./components/Difficulty"
+import Win from "./components/Win"
+import Loose from "./components/Loose"
 
 
 function shuffle(array) {
@@ -10,10 +14,8 @@ function shuffle(array) {
     .map(e => e.value)
 }
 
-
 function App() {
   const [cards, setCards] = useState([])
-  const [loading, setLoading] = useState(true);
   const [difficulty, setDifficulty] = useState(null)
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -27,7 +29,6 @@ function App() {
 
       const req = await getPoki(difficulty);
 
-      setLoading(false);
       setCards(req);
     })()
   }, [difficulty])
@@ -60,20 +61,11 @@ function App() {
 
   }
 
-  const displayScore = (
-    <div className="score">
-      <p>Score: {score}</p>
-      <p>highScore: {highScore}</p>
-    </div>
-  )
-
-
   if (loose) {
     return (
       <>
-        {displayScore}
-        <p>You loose</p>
-        <button onClick={() => handleRestart()}>
+        <Loose score={score} highScore={highScore} />
+        <button onClick={handleRestart}>
           Try again
         </button>
       </>
@@ -82,21 +74,20 @@ function App() {
 
   if (score === difficulty) {
     return (
-      <>
-        {displayScore}
-        <p>You win</p>
-        <button onClick={() => handleRestart()}>
+      <div>
+        <Win score={score} highScore={highScore} />
+        <button onClick={handleRestart}>
           Restart
         </button>
-      </>
+      </div>
     )
   }
 
   if (difficulty != null) {
     return (
       <>
-        {displayScore}
-        {loading ? <p>Loading</p> :
+        <Score score={score} highScore={highScore} />
+        {
           <div className="cards">
             {cards.map(c => {
               if (c.clicked === true) {
@@ -122,14 +113,10 @@ function App() {
   return (
     <div>
       {cards.length === 0 &&
-        <div>
-          <button onClick={() => setDifficulty(5)}>Easy</button>
-          <button onClick={() => setDifficulty(10)}>Normal</button>
-          <button onClick={() => setDifficulty(15)}>Hard</button>
-        </div>
+        <Difficulty handleClick={setDifficulty} />
       }
 
-      {displayScore}
+      <Score score={score} highScore={highScore} />
     </div>
   )
 }

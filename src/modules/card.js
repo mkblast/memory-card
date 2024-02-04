@@ -6,8 +6,4 @@ export class card {
 
   id = crypto.randomUUID();
   clicked = false;
-
-  setClick() {
-    this.clicked = true;
-  }
 }
