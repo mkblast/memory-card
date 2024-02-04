@@ -1,0 +1,8 @@
+.score {
+  display: flex;
+  gap: 1em;
+  color: #F6E652;
+  font-size: 2em;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #181A1B;
+}

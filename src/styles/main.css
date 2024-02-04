@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "pokemon";
+  src: url("../assets/VCR_OSD_MONO_1.001.woff2") format("woff2"),
+    url("../assets/VCR_OSD_MONO_1.001.ttf") format("ttf");
+}
+
+* {
+  font-family: "pokemon";
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-image: url("../assets/background-image.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-position: bottom;
+}
+

@@ -4,7 +4,7 @@ function Loose({ score, highScore }) {
   return (
     <>
       <Score score={score} highScore={highScore} />
-      <p>You loose</p>
+      <p className="result">You loose</p>
     </>
   )
 }

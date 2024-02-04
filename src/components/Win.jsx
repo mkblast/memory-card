@@ -4,7 +4,7 @@ function Win({ score, highScore }) {
   return (
     <>
       <Score score={score} highScore={highScore} />
-      <p>You win</p>
+      <p className="result">You win</p>
     </>
   )
 }

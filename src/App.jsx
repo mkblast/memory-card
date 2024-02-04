@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import Card from "./components/Card"
 import { getPoki } from "./modules/request"
-import "./App.css"
 import Score from "./components/Score"
 import Difficulty from "./components/Difficulty"
 import Win from "./components/Win"
 import Loose from "./components/Loose"
+import "./styles/app.css"
 
 
 function shuffle(array) {
@@ -61,63 +61,78 @@ function App() {
 
   }
 
+  const title = <h1 className="title">Memory Card</h1>
+
   if (loose) {
     return (
       <>
-        <Loose score={score} highScore={highScore} />
-        <button onClick={handleRestart}>
-          Try again
-        </button>
+        {title}
+        <div className="control">
+          <Loose score={score} highScore={highScore} />
+          <div>
+            <button onClick={handleRestart}>
+              Try again
+            </button>
+          </div>
+        </div>
       </>
     )
   }
 
   if (score === difficulty) {
     return (
-      <div>
-        <Win score={score} highScore={highScore} />
-        <button onClick={handleRestart}>
-          Restart
-        </button>
-      </div>
+      <>
+        {title}
+        <div className="control">
+          <Win score={score} highScore={highScore} />
+          <button onClick={handleRestart}>
+            Restart
+          </button>
+        </div>
+      </>
     )
   }
 
   if (difficulty != null) {
     return (
       <>
-        <Score score={score} highScore={highScore} />
-        {
-          <div className="cards">
-            {cards.map(c => {
-              if (c.clicked === true) {
+        {title}
+        <div className="control">
+          <Score score={score} highScore={highScore} />
+          {
+            <div className="cards">
+              {cards.map(c => {
+                if (c.clicked === true) {
+                  return (
+                    <div className="card" key={c.id} onClick={() => setLoose(true)} >
+                      <Card {...c} />
+                    </div>
+                  )
+                }
+
                 return (
-                  <div key={c.id} onClick={() => setLoose(true)}>
+                  <div className="card" key={c.id} onClick={() => clickHandler(c.id)}>
                     <Card {...c} />
                   </div>
                 )
-              }
-
-              return (
-                <div key={c.id} onClick={() => clickHandler(c.id)}>
-                  <Card {...c} />
-                </div>
-              )
-            })}
-          </div>
-        }
+              })}
+            </div>
+          }
+        </div>
       </>
     )
   }
 
   return (
-    <div>
-      {cards.length === 0 &&
-        <Difficulty handleClick={setDifficulty} />
-      }
-
-      <Score score={score} highScore={highScore} />
-    </div>
+    <>
+      {title}
+      <div className="control">
+        <Score score={score} highScore={highScore} />
+        {cards.length === 0 &&
+          <Difficulty handleClick={setDifficulty} />
+        }
+      </div>
+    </>
   )
 }
 
